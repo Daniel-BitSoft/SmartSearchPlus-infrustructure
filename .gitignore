@@ -1,0 +1,9 @@
+.terraform
+.terraform.tfstate.lock.info
+terraform.tfstate
+terraform.tfstate.backup
+secrets.tfvars
+terraform.example.tfvars
+secrets.tfvars.example
+out.plan
+.terraform.lock.hcl
