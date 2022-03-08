@@ -52,12 +52,12 @@ Here is a guideline:
 - if everything looks good, you can execute the changes with `terraform apply out.plan`
 
 
-# Use bastion host to connect to private ec2 instance:
+### Use bastion host to connect to private ec2 instance:
 https://aws.amazon.com/blogs/security/securely-connect-to-linux-instances-running-in-a-private-amazon-vpc/
 
 * manually set your ip address in bastion security group as this terraform does not set incoming traffic for bastion host
 
-# Use bastian host to connect to mysql
+### Use bastian host to connect to mysql
 SSH into bastian host using method explained in previous section and run following (replace arguments with actual values):
 
 mysql -h ClusterEndpoint -P 3306  -u usernam -p"password"
