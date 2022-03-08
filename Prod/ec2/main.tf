@@ -201,6 +201,59 @@ output "app_api_asg" {
    value = aws_autoscaling_group.app_api_asg.id
 }
 
+# scale up policy with cpu alarm
+resource "aws_autoscaling_policy" "app_api_scaleup" {
+    name = "ss-app-asp-scaleup"
+    autoscaling_group_name = "${aws_autoscaling_group.app_api_asg.name}"
+    adjustment_type = "ChangeInCapacity"
+    scaling_adjustment = "1"
+    cooldown = "300"
+    policy_type = "SimpleScaling"
+}
+
+resource "aws_cloudwatch_metric_alarm" "app_api_cpu_up_alarm" {
+    alarm_name = "app_api_cpu_up_alarm"
+    alarm_description = "app_api_cpu_up_alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods = "2"
+    metric_name = "CPUUtilization"
+    namespace = "AWS/EC2"
+    period = "120"
+    statistic = "Average"
+    threshold = "60"
+    dimensions = {
+      "AutoScalingGroupName" = "${aws_autoscaling_group.app_api_asg.name}"
+    }
+    actions_enabled = true
+    alarm_actions = ["${aws_autoscaling_policy.app_api_scaleup.arn}"]
+}
+
+# scale down policy with cpu alarm
+resource "aws_autoscaling_policy" "app_api_scaledown" {
+    name = "app_api_scaledown"
+    autoscaling_group_name = "${aws_autoscaling_group.app_api_asg.name}"
+    adjustment_type = "ChangeInCapacity"
+    scaling_adjustment = "-1"
+    cooldown = "300"
+    policy_type = "SimpleScaling"
+}
+resource "aws_cloudwatch_metric_alarm" "app_api_cpu_down_alarm" {
+    alarm_name = "app_api_cpu_down_alarm"
+    alarm_description = "app_api_cpu_down_alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods = "2"
+    metric_name = "CPUUtilization"
+    namespace = "AWS/EC2"
+    period = "120"
+    statistic = "Average"
+    threshold = "10"
+    dimensions = {
+        "AutoScalingGroupName" = "${aws_autoscaling_group.app_api_asg.name}"
+    }
+    actions_enabled = true
+    alarm_actions = ["${aws_autoscaling_policy.app_api_scaledown.arn}"]
+}
+
 
 # 3) API
 #-------------------------------------------------
@@ -247,4 +300,57 @@ resource "aws_launch_configuration" "api_lc" {
 
 output "api_asg" {
    value = aws_autoscaling_group.api_asg.id
+}
+
+# scale up policy with cpu alarm
+resource "aws_autoscaling_policy" "api_scaleup" {
+    name = "ss-app-asp-scaleup"
+    autoscaling_group_name = "${aws_autoscaling_group.api_asg.name}"
+    adjustment_type = "ChangeInCapacity"
+    scaling_adjustment = "1"
+    cooldown = "300"
+    policy_type = "SimpleScaling"
+}
+
+resource "aws_cloudwatch_metric_alarm" "api_cpu_up_alarm" {
+    alarm_name = "api_cpu_up_alarm"
+    alarm_description = "api_cpu_up_alarm"
+    comparison_operator = "GreaterThanOrEqualToThreshold"
+    evaluation_periods = "2"
+    metric_name = "CPUUtilization"
+    namespace = "AWS/EC2"
+    period = "120"
+    statistic = "Average"
+    threshold = "60"
+    dimensions = {
+      "AutoScalingGroupName" = "${aws_autoscaling_group.api_asg.name}"
+    }
+    actions_enabled = true
+    alarm_actions = ["${aws_autoscaling_policy.api_scaleup.arn}"]
+}
+
+# scale down policy with cpu alarm
+resource "aws_autoscaling_policy" "api_scaledown" {
+    name = "api_scaledown"
+    autoscaling_group_name = "${aws_autoscaling_group.api_asg.name}"
+    adjustment_type = "ChangeInCapacity"
+    scaling_adjustment = "-1"
+    cooldown = "300"
+    policy_type = "SimpleScaling"
+}
+resource "aws_cloudwatch_metric_alarm" "api_cpu_down_alarm" {
+    alarm_name = "api_cpu_down_alarm"
+    alarm_description = "api_cpu_down_alarm"
+    comparison_operator = "LessThanOrEqualToThreshold"
+    evaluation_periods = "2"
+    metric_name = "CPUUtilization"
+    namespace = "AWS/EC2"
+    period = "120"
+    statistic = "Average"
+    threshold = "10"
+    dimensions = {
+        "AutoScalingGroupName" = "${aws_autoscaling_group.api_asg.name}"
+    }
+    actions_enabled = true
+    alarm_actions = ["${aws_autoscaling_policy.api_scaledown.arn}"]
 }
