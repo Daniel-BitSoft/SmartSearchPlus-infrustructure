@@ -1,6 +1,6 @@
 name                 = "ssp"
 environment          = "dev"
-availability_zones   = ["us-west-1a", "us-west-1b"]
+availability_zones   = ["us-west-2a", "us-west-2b"]
 private_subnets      = ["10.0.0.0/24", "10.0.2.0/24"]
 public_subnets       = ["10.0.6.0/24", "10.0.8.0/24"]
 #tsl_certificate_arn = "mycertificatearn"

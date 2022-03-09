@@ -46,7 +46,7 @@ Here is a guideline:
 ### Get Started building your own infrastructure
 
 - Install terraform on MacOS with `brew install terraform`
-- create your own `secrets.tfvars` based on `secrets.example.tfvars`, insert the values for your AWS access key and secrets. If you don't create your `secrets.tfvars`, don't worry. Terraform will interactively prompt you for missing variables later on. You can also create your `environment.tfvars` file to manage non-secret values for different environments or projects with the same infrastructure
+- create your own `secrets.tfvars` based on `secrets.example.tfvars`, insert the values for your AWS access key and secrets. If you don't create your `secrets.tfvars`, don't worry. Terraform will interactively prompt you for missing variables later on. You can also create your `terraform.tfvars` file to manage non-secret values for different environments or projects with the same infrastructure
 - execute `terraform init`, it will initialize your local terraform and connect it to the state store, and it will download all the necessary providers
 - execute `terraform plan -var-file="secrets.tfvars" -var-file="terraform.tfvars" -out="out.plan"` - this will calculate the changes terraform has to apply and creates a plan. If there are changes, you will see them. Check if any of the changes are expected, especially deletion of infrastructure. - this will calculate the changes terraform has to apply and creates a plan. If there are changes, you will see them. Check if any of the changes are expected, especially deletion of infrastructure.
 - if everything looks good, you can execute the changes with `terraform apply out.plan`
